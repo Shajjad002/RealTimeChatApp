@@ -30,3 +30,4 @@ D:\MyProject\Angular\Chat\BackEnd\API\obj\Debug\net9.0\refint\API.dll
 D:\MyProject\Angular\Chat\BackEnd\API\obj\Debug\net9.0\API.pdb
 D:\MyProject\Angular\Chat\BackEnd\API\obj\Debug\net9.0\API.genruntimeconfig.cache
 D:\MyProject\Angular\Chat\BackEnd\API\obj\Debug\net9.0\ref\API.dll
+D:\MyProject\Angular\Chat\BackEnd\api\obj\Debug\net9.0\API.sourcelink.json

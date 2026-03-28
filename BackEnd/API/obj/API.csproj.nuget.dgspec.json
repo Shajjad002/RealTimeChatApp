@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\MyProject\\Angular\\Chat\\BackEnd\\api\\API.csproj": {}
+    "D:\\MyProject\\Angular\\Chat\\BackEnd\\API\\API.csproj": {}
   },
   "projects": {
-    "D:\\MyProject\\Angular\\Chat\\BackEnd\\api\\API.csproj": {
+    "D:\\MyProject\\Angular\\Chat\\BackEnd\\API\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\MyProject\\Angular\\Chat\\BackEnd\\api\\API.csproj",
+        "projectUniqueName": "D:\\MyProject\\Angular\\Chat\\BackEnd\\API\\API.csproj",
         "projectName": "API",
-        "projectPath": "D:\\MyProject\\Angular\\Chat\\BackEnd\\api\\API.csproj",
+        "projectPath": "D:\\MyProject\\Angular\\Chat\\BackEnd\\API\\API.csproj",
         "packagesPath": "C:\\Users\\shajj\\.nuget\\packages\\",
-        "outputPath": "D:\\MyProject\\Angular\\Chat\\BackEnd\\api\\obj\\",
+        "outputPath": "D:\\MyProject\\Angular\\Chat\\BackEnd\\API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -50,9 +50,21 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[9.0.14, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[9.0.0, )"
             }
           },
           "imports": [
