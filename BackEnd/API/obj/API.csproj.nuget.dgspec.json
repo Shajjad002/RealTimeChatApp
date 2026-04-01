@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\MyProject\\Angular\\Chat\\BackEnd\\api\\API.csproj": {}
+    "D:\\MyProject\\Angular\\Chat\\BackEnd\\API\\API.csproj": {}
   },
   "projects": {
-    "D:\\MyProject\\Angular\\Chat\\BackEnd\\api\\API.csproj": {
+    "D:\\MyProject\\Angular\\Chat\\BackEnd\\API\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\MyProject\\Angular\\Chat\\BackEnd\\api\\API.csproj",
+        "projectUniqueName": "D:\\MyProject\\Angular\\Chat\\BackEnd\\API\\API.csproj",
         "projectName": "API",
-        "projectPath": "D:\\MyProject\\Angular\\Chat\\BackEnd\\api\\API.csproj",
+        "projectPath": "D:\\MyProject\\Angular\\Chat\\BackEnd\\API\\API.csproj",
         "packagesPath": "C:\\Users\\shajj\\.nuget\\packages\\",
-        "outputPath": "D:\\MyProject\\Angular\\Chat\\BackEnd\\api\\obj\\",
+        "outputPath": "D:\\MyProject\\Angular\\Chat\\BackEnd\\API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
