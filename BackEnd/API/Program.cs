@@ -24,7 +24,8 @@ builder.Services.AddIdentityCore<AppUser>()
 
 
 
-builder.Services.AddAuthentication(options =>{options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+builder.Services.AddAuthentication(options =>{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(options =>
@@ -44,7 +45,7 @@ builder.Services.AddAuthentication(options =>{options.DefaultAuthenticateScheme 
     };
 });
 
-
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 

@@ -29,7 +29,7 @@ public static class AccountEndpoint
                 return Results.BadRequest(Response<string>.Failure(result.Errors.FirstOrDefault()?.Description ?? "Failed to create user."));
             }
             return Results.Ok(Response<string>.Success("User registered successfully."));
-        }   );
+        }   ).DisableAntiforgery();
 
         return group;
     }
