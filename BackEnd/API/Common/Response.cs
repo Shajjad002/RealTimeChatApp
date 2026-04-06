@@ -5,7 +5,7 @@ namespace API.Common;
 public class Response<T>
 {
 
-    public bool IsSuccess { get; set; }
+    public bool IsSuccess { get; set; } 
 
     public T Data { get; set; }
 
