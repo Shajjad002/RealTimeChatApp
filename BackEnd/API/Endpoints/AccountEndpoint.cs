@@ -1,8 +1,10 @@
 using System;
 using API.Common;
 using API.Models;
+using API.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Endpoints;
 
@@ -12,7 +14,7 @@ public static class AccountEndpoint
     {
         var group = app.MapGroup("/api/account").WithTags("account");
 
-        group.MapPost("/register", async (IFormCollection form, UserManager<AppUser> userManager) =>
+        group.MapPost("/register", async (HttpContext context, IFormCollection form, UserManager<AppUser> userManager) =>
         {
             try
             {
@@ -20,6 +22,27 @@ public static class AccountEndpoint
                 var email = form["email"].ToString();
                 var password = form["password"].ToString();
                 var username = form["username"].ToString(); // Using email as username
+                var file = form.Files.GetFile("profilePicture");
+                string? picture = null;
+
+
+                // if (file == null || file.Length == 0)
+                // {
+                //     return Results.BadRequest(Response<string>.Failure("Profile picture is required."));
+                // }
+                if (file != null )
+                {
+                    var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+                    var extension = Path.GetExtension(file.FileName).ToLower();
+                    if (!allowedExtensions.Contains(extension))
+                    {
+                        return Results.BadRequest(Response<string>.Failure("Invalid file type. Only JPG, JPEG, PNG, and GIF are allowed."));
+                    }
+                    picture = await FileUpload.UploadFileAsync(file);
+                    // You can store the fileName in the database associated with the user
+                    picture = $"{context.Request.Scheme}://{context.Request.Host}/uploads/{picture}";
+                }
+
 
                 if (string.IsNullOrWhiteSpace(fullName) || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
                 {
@@ -36,7 +59,9 @@ public static class AccountEndpoint
                 {
                     FullName = fullName,
                     Email = email,
-                    UserName = username
+                    UserName = username,
+                    ProfileImage = file != null ? picture : null,
+
                 };
 
                 var result = await userManager.CreateAsync(user, password);
