@@ -13,11 +13,8 @@ var JwtSettings = builder.Configuration.GetSection("JwtSettings");
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-builder.Services.AddDbContext<AppDbContext>(options =>
-{
-    //options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
-    options.UseSqlite("Data Source=chat");
-});
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite("Data Source=chat.db"));
+
 builder.Services.AddIdentityCore<AppUser>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();

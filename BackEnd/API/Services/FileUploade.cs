@@ -21,7 +21,7 @@ public class FileUpload
 
         try
         {
-            Directory.CreateDirectory(uploadPath); // Ensure the directory exists
+            //Directory.CreateDirectory(uploadPath); // Ensure the directory exists
 
             await using var stream = new FileStream(filePath, FileMode.Create);
             await file.CopyToAsync(stream);
