@@ -1,4 +1,5 @@
 using API.Common;
+using API.DTOs;
 using API.Models;
 using API.Services;
 using Microsoft.AspNetCore.Identity;
@@ -60,6 +61,24 @@ public static class AccountEndpoint
         }).DisableAntiforgery();
 
 
+        group.MapPost("/login", async (UserManager<AppUser> userManager, TokenService tokenService, LoginDto loginDto) =>
+        {
+            if (string.IsNullOrEmpty(loginDto.Email) || string.IsNullOrEmpty(loginDto.Password))
+            {
+                return Results.BadRequest(Response<string>.Failure("Email and password are required."));
+            }
+
+            var user = await userManager.FindByEmailAsync(loginDto.Email);
+            if (user == null || !await userManager.CheckPasswordAsync(user, loginDto.Password))
+            {
+                return Results.BadRequest(Response<string>.Failure("Invalid email or password."));
+            }
+
+            var token = tokenService.GenerateToken(user.Id, user.UserName!);
+
+            return Results.Ok(Response<string>.Success(token,"Login successful."));
+
+        }).DisableAntiforgery();
 
         return group;
     }
