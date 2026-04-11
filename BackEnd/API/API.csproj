@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <Folder Include="Common\" />
+    <Folder Include="DTOs\" />
     <Folder Include="Endpoints\" />
     <Folder Include="Models\" />
     <Folder Include="Services\" />
