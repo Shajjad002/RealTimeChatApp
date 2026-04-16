@@ -1,0 +1,18 @@
+# Ignore build outputs and generated files
+[Bb]in/
+[Oo]bj/
+*.user
+*.suo
+*.cache
+.vs/
+
+# Ignore npm/node modules if present
+node_modules/
+
+# Ignore IDE/editor workspace files
+*.log
+*.tmp
+*.temp
+
+# Ignore publish outputs
+publish/
