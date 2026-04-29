@@ -2,6 +2,7 @@ using System.Text;
 using API.Data;
 using API.Endpoints;
 using API.Models;
+using API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -13,15 +14,13 @@ var JwtSettings = builder.Configuration.GetSection("JwtSettings");
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-builder.Services.AddDbContext<AppDbContext>(options =>
-{
-    //options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
-    options.UseSqlite("Data Source=chat");
-});
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite("Data Source=chat.db"));
+
 builder.Services.AddIdentityCore<AppUser>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
+builder.Services.AddScoped<TokenService>();
 
 
 builder.Services.AddAuthentication(options =>{
@@ -36,9 +35,9 @@ builder.Services.AddAuthentication(options =>{
     {
        
         ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtSettings.GetSection("SecretKey").Value!)),
+        ValidIssuer = JwtSettings["Issuer"],
+        ValidAudience = JwtSettings["Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtSettings["SecretKey"] ?? throw new InvalidOperationException("JWT secret key is not configured. Please set JwtSettings:SecretKey in configuration."))),
         ValidateIssuer = false,
         ValidateAudience = false,
         ValidateLifetime = true,
@@ -58,7 +57,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseStaticFiles();
 app.MapAccountEndpoints();
 
 app.Run();
