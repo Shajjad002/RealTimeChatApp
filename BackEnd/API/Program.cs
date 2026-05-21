@@ -1,4 +1,8 @@
 using System.Text;
+using Anthropic;
+using Anthropic.Models.Beta.Agents;
+using Anthropic.Models.Beta.Messages;
+using Anthropic.Models.Messages;
 using API.Data;
 using API.Endpoints;
 using API.Models;
@@ -23,7 +27,8 @@ builder.Services.AddIdentityCore<AppUser>()
 builder.Services.AddScoped<TokenService>();
 
 
-builder.Services.AddAuthentication(options =>{
+builder.Services.AddAuthentication(options =>
+{
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -33,7 +38,7 @@ builder.Services.AddAuthentication(options =>{
     options.RequireHttpsMetadata = false;
     options.TokenValidationParameters = new TokenValidationParameters()
     {
-       
+
         ValidateIssuerSigningKey = true,
         ValidIssuer = JwtSettings["Issuer"],
         ValidAudience = JwtSettings["Audience"],
@@ -43,6 +48,42 @@ builder.Services.AddAuthentication(options =>{
         ValidateLifetime = true,
     };
 });
+
+// var apiKey = Environment.GetEnvironmentVariable("ANTHROPIC_API_KEY");
+// if (string.IsNullOrEmpty(apiKey))
+// {
+//     throw new InvalidOperationException("ANTHROPIC_API_KEY environment variable is not set.");
+// }
+// const string prompt = "Hello, how can I assist you today?";
+// AnthropicClient anthropicClient = new()
+// {
+//     ApiKey = apiKey
+// };
+// Anthropic.Models.Beta.Messages.MessageCreateParams messageParams = new()
+// {
+//     Model = "claude-sonnet-4-20250514",
+//     MaxTokens = 1024,
+//     Messages =
+//     [
+//         new() { Role = Anthropic.Models.Beta.Messages.Role.User, Content = prompt }
+//     ]
+// };
+//await SyncMessage(anthropicClient, messageParams);
+
+// static async Task SyncMessage(AnthropicClient anthropicClient, Anthropic.Models.Beta.Messages.MessageCreateParams messageParams)
+// {
+
+//     var response = await anthropicClient.Beta.Messages.Create(messageParams);
+//     var message = string.Join("",
+//          response
+//             .Content.Select(message => message.Value)
+//             .OfType<TextBlock>()
+//             .Select(textBlock => textBlock.Text)
+    
+//     );
+//     Console.WriteLine(message);
+//     Console.ReadLine();
+// }
 
 builder.Services.AddAuthorization();
 

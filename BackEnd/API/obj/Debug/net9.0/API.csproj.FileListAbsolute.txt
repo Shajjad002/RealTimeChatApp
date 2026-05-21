@@ -153,3 +153,11 @@ D:\MyProject\Angular\Chat\BackEnd\API\obj\Debug\net9.0\API.pdb
 D:\MyProject\Angular\Chat\BackEnd\API\obj\Debug\net9.0\API.genruntimeconfig.cache
 D:\MyProject\Angular\Chat\BackEnd\API\obj\Debug\net9.0\ref\API.dll
 D:\MyProject\Angular\Chat\BackEnd\API\bin\Debug\net9.0\API.staticwebassets.runtime.json
+D:\MyProject\Angular\Chat\BackEnd\API\bin\Debug\net9.0\Anthropic.dll
+D:\MyProject\Angular\Chat\BackEnd\API\bin\Debug\net9.0\Microsoft.Extensions.AI.Abstractions.dll
+D:\MyProject\Angular\Chat\BackEnd\API\bin\Debug\net9.0\System.IO.Pipelines.dll
+D:\MyProject\Angular\Chat\BackEnd\API\bin\Debug\net9.0\System.Net.ServerSentEvents.dll
+D:\MyProject\Angular\Chat\BackEnd\API\bin\Debug\net9.0\System.Text.Encodings.Web.dll
+D:\MyProject\Angular\Chat\BackEnd\API\bin\Debug\net9.0\System.Text.Json.dll
+D:\MyProject\Angular\Chat\BackEnd\API\bin\Debug\net9.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
+D:\MyProject\Angular\Chat\BackEnd\API\bin\Debug\net9.0\runtimes\win\lib\net9.0\System.Text.Encodings.Web.dll
