@@ -45,6 +45,11 @@ namespace API.Hubs
 
                 await Clients.AllExcept(connectionId).SendAsync("Notify", user);
             }
+            if (!string.IsNullOrEmpty(receiverId))
+            {
+                await LoadMessages(receiverId);
+            }
+            
             await Clients.All.SendAsync("OnlineUsers", await GetAllUsers());
 
         }
