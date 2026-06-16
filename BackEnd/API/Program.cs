@@ -5,6 +5,7 @@ using Anthropic.Models.Beta.Messages;
 using Anthropic.Models.Messages;
 using API.Data;
 using API.Endpoints;
+using API.Hubs;
 using API.Models;
 using API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -13,11 +14,29 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins(
+                  "http://localhost:5000",
+                  "https://localhost:5000",
+                  "http://localhost:4200",
+                  "https://localhost:4200")
+              .AllowAnyMethod()
+              .AllowCredentials()
+              .AllowAnyHeader();
+    });
+});
 var JwtSettings = builder.Configuration.GetSection("JwtSettings");
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddSignalR();
+
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite("Data Source=chat.db"));
 
 builder.Services.AddIdentityCore<AppUser>()
@@ -47,43 +66,21 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = false,
         ValidateLifetime = true,
     };
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var accessToken = context.Request.Query["access_token"];
+            var path = context.HttpContext.Request.Path;
+            if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/hubs"))
+            {
+                context.Token = accessToken;
+            }
+            return Task.CompletedTask;
+        },
+        
+    };
 });
-
-// var apiKey = Environment.GetEnvironmentVariable("ANTHROPIC_API_KEY");
-// if (string.IsNullOrEmpty(apiKey))
-// {
-//     throw new InvalidOperationException("ANTHROPIC_API_KEY environment variable is not set.");
-// }
-// const string prompt = "Hello, how can I assist you today?";
-// AnthropicClient anthropicClient = new()
-// {
-//     ApiKey = apiKey
-// };
-// Anthropic.Models.Beta.Messages.MessageCreateParams messageParams = new()
-// {
-//     Model = "claude-sonnet-4-20250514",
-//     MaxTokens = 1024,
-//     Messages =
-//     [
-//         new() { Role = Anthropic.Models.Beta.Messages.Role.User, Content = prompt }
-//     ]
-// };
-//await SyncMessage(anthropicClient, messageParams);
-
-// static async Task SyncMessage(AnthropicClient anthropicClient, Anthropic.Models.Beta.Messages.MessageCreateParams messageParams)
-// {
-
-//     var response = await anthropicClient.Beta.Messages.Create(messageParams);
-//     var message = string.Join("",
-//          response
-//             .Content.Select(message => message.Value)
-//             .OfType<TextBlock>()
-//             .Select(textBlock => textBlock.Text)
-    
-//     );
-//     Console.WriteLine(message);
-//     Console.ReadLine();
-// }
 
 builder.Services.AddAuthorization();
 
@@ -94,11 +91,22 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+app.UseCors(x => x
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .WithOrigins(
+        "http://localhost:5000",
+        "https://localhost:5000",
+        "http://localhost:4200",
+        "https://localhost:4200"
+    ));
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseStaticFiles();
+app.MapHub<ChatHub>("/hubs/chat");
 app.MapAccountEndpoints();
 
 app.Run();
