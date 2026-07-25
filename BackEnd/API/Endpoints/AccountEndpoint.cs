@@ -22,20 +22,19 @@ public static class AccountEndpoint
             {
                 return Results.BadRequest(Response<string>.Failure("All fields are required."));
             }
-            if (profileImage == null)
+            string? picture = null;
+            if (profileImage is not null)
             {
-                return Results.BadRequest(Response<string>.Failure("Profile image is required."));
-            }
+                var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+                var extension = Path.GetExtension(profileImage.FileName).ToLower();
+                if (!allowedExtensions.Contains(extension))
+                {
+                    return Results.BadRequest(Response<string>.Failure("Invalid file type. Only JPG, JPEG, PNG, and GIF are allowed."));
+                }
 
-            var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
-            var extension = Path.GetExtension(profileImage.FileName).ToLower();
-            if (!allowedExtensions.Contains(extension))
-            {
-                return Results.BadRequest(Response<string>.Failure("Invalid file type. Only JPG, JPEG, PNG, and GIF are allowed."));
+                var uploadedFileName = await FileUpload.UploadFileAsync(profileImage);
+                picture = $"{context.Request.Scheme}://{context.Request.Host}/uploads/{uploadedFileName}";
             }
-            var picture = await FileUpload.UploadFileAsync(profileImage);
-            // You can store the fileName in the database associated with the user
-            picture = $"{context.Request.Scheme}://{context.Request.Host}/uploads/{picture}";
 
 
             var userFromDb = await userManager.FindByEmailAsync(email);
@@ -56,7 +55,8 @@ public static class AccountEndpoint
             var result = await userManager.CreateAsync(user, password);
             if (!result.Succeeded)
             {
-                return Results.BadRequest(Response<string>.Failure("User registration failed."));
+                var errorMessage = result.Errors.FirstOrDefault()?.Description ?? "User registration failed.";
+                return Results.BadRequest(Response<string>.Failure(errorMessage));
             }
             return Results.Ok(Response<string>.Success("User registered successfully."));
 
